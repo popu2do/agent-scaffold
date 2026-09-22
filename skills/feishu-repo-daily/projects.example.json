@@ -1,0 +1,10 @@
+[
+  {
+    "report_name": "示例项目A",
+    "repo_path": "D:/path/to/project_a"
+  },
+  {
+    "report_name": "示例项目B",
+    "repo_path": "D:/path/to/project_b"
+  }
+]

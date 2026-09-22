@@ -1,0 +1,4 @@
+interface:
+  display_name: "Worktree Task Flow"
+  short_description: "以 <project>-worktrees 隔离任务并按阶段推进到验证、合入、清理"
+  default_prompt: "Use $worktree-task-flow to open an isolated <project>-worktrees and drive the task through preflight, analysis, design, alignment, implementation, verification, merge, and cleanup."

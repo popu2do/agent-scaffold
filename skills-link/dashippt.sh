@@ -1,0 +1,1 @@
+npx skills add chuspeeism/dashi-ppt-skill --skill dashiai-ppt

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Feishu Repo Daily"
+  short_description: "Draft Feishu reports from a maintained repo list and same-day git commits"
+  default_prompt: "Use $feishu-repo-daily to read the maintained repo list, summarize same-day git commits into a Feishu daily report, strictly follow the fixed output template, and after any user correction re-render the full draft before asking whether to push it."

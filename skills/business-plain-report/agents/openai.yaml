@@ -1,0 +1,4 @@
+interface:
+  display_name: "业务白话汇报"
+  short_description: "将技术分析转成业务白话说明，直接给出影响与决策动作"
+  default_prompt: "请用业务角度白话解释当前结论：先给结论，再讲原因、影响范围和可执行建议"

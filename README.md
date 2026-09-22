@@ -1,0 +1,1 @@
+I created and maintained vibecoding scaffolding myself

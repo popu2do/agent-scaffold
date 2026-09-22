@@ -1,0 +1,45 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Logs and temporary files
+*.log
+*.tmp
+.tmp/
+
+# Archives and backups
+.archive/
+archive/
+*.bak
+*~
+
+# OS & Editor metadata
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Secrets & Environment variables
+*.env
+*.env.*
+*.pem
+*.key
+
+# Local custom instructions & tools
+AGENT.md
+push.sh
+sync.sh
+
+# Local private skill configs
+config.json
+*.local.json
+.yunzhijia-reimburse.json

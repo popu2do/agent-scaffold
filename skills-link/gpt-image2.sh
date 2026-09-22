@@ -1,0 +1,1 @@
+npx skills add freestylefly/awesome-gpt-image-2 --skill gpt-image-2-style-library

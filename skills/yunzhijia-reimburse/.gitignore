@@ -1,0 +1,10 @@
+# Private business configuration (ignored for upload / open-source)
+config.json
+*.local.json
+.yunzhijia-reimburse.json
+
+# Temporary files & receipts
+invoices/
+*.pdf
+*.xlsx
+*.png

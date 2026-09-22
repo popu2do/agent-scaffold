@@ -1,0 +1,23 @@
+{
+  "skill_name": "yunzhijia-reimburse",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我把 D:/reimbursements/invoices 目录下的电子发票填进云之家报销单，链接是 https://www.yunzhijia.com/yzj-layout/home/",
+      "expected_output": "读取指定目录发票列表，按文件名规约提取发生日期与金额，通过 OpenCLI 定位云之家表单并批量注入明细，核对大写金额后呈现截图与明细清单，不自动点击提交",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "我这里有几笔加班打车的行程发票，云之家页面已经开着了，帮我录进去",
+      "expected_output": "检查云之家当前报销单已有行，自动继承已有行研发项目与承担部门，将新打车明细追加至末尾，触发重算小计与总额",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "浏览器扩展无法连接，帮我把发票清单生成可以在 Chrome 控制台直接粘贴执行的填表脚本",
+      "expected_output": "生成打包好完整发票数据的自包含单行 JS 脚本，指导用户按 F12 打开 Console 粘贴回车运行",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sidecar Tasks 并发调度"
+  short_description: "主线程推进关键路径，独立旁路子任务按难度分级并发调度"
+  default_prompt: "Use $sidecar-tasks to keep critical-path work local and dispatch independent sidecar subagents by task complexity."

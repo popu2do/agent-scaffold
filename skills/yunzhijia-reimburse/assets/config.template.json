@@ -1,0 +1,51 @@
+{
+  "defaultProject": {
+    "name": "YOUR_PROJECT_NAME",
+    "id": "PROJECT_ID",
+    "number": "PROJECT_CODE"
+  },
+  "defaultDepartment": {
+    "name": "YOUR_DEPARTMENT_NAME",
+    "id": "DEPT_ID",
+    "number": "DEPT_CODE"
+  },
+  "categoryMappings": [
+    {
+      "keywords": [
+        "打车",
+        "出行",
+        "交通",
+        "网约车",
+        "出租车"
+      ],
+      "type": "加班交通费",
+      "id": "3",
+      "number": "08.01",
+      "defaultReason": "加班打车费"
+    },
+    {
+      "keywords": [
+        "餐",
+        "餐饮",
+        "工作餐",
+        "外卖"
+      ],
+      "type": "加班餐费",
+      "id": "1",
+      "number": "04.02",
+      "defaultReason": "加班餐费"
+    },
+    {
+      "keywords": [
+        "耗材",
+        "办公用品",
+        "配件",
+        "低值"
+      ],
+      "type": "低值易耗品",
+      "id": "6",
+      "number": "16",
+      "defaultReason": "日常耗材采购"
+    }
+  ]
+}
