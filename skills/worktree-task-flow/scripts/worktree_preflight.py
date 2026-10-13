@@ -33,7 +33,7 @@ def parse_args() -> argparse.Namespace:
         default="",
         help=(
             "Worktree root path. If omitted, defaults to "
-            "<repo-parent>/<repo-name>-worktrees"
+            "<repo-root>/.worktree. To create outside the workspace, specify explicitly."
         ),
     )
     parser.add_argument("--task-slug", default="", help="Task slug for suggested path")
@@ -51,7 +51,7 @@ def resolve_worktree_root(repo_root: Path, args: argparse.Namespace) -> Path:
     if args.worktree_root:
         raw = Path(args.worktree_root)
         return (repo_root / raw).resolve() if not raw.is_absolute() else raw.resolve()
-    return (repo_root.parent / f"{repo_root.name}-worktrees").resolve()
+    return (repo_root / ".worktree").resolve()
 
 
 def main() -> int:

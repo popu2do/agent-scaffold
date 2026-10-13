@@ -9,7 +9,7 @@ description: "Use when the user wants isolated parallel work in a git worktree a
 
 把 worktree 当成一个完整任务容器来用，而不是只把它当成一个 Git 子目录。
 
-worktree 根目录默认命名为 `<project>-worktrees`，可通过 `--worktree-root` 覆盖。
+worktree 根目录默认位于主工作区下 `.worktree/<task_slug>`，创建完成后必须明确反馈实际物理路径。若因特殊需求要在工作区外创建，必须显式指定 `--worktree-root`。
 
 核心阶段固定为：
 
