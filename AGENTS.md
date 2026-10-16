@@ -36,7 +36,3 @@ Be honest. Follow SOLID, KISS, DRY, YAGNI. Be concise, evidence-based, and objec
 - Keep docs live — update md when stack or conventions change.
 - Protect the mainline — remind the user to branch for big changes; the user decides.
 
-#### RTK
-
-- Prefix every shell command with `rtk`. Shell built-ins, aliases, functions, pipelines, variables, and other shell syntax must use `rtk proxy <shell> <shell_args> "<command>"`; only external executables can be prefixed directly.
-- `rtk gain` shows token savings; `rtk gain --history` shows history; `rtk proxy <cmd>` runs raw.
