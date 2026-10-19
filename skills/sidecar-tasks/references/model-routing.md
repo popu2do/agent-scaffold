@@ -35,6 +35,8 @@ Choose task difficulty and compute budget through the thinking level (reasoning 
 
 ## Example Routing
 
+The tasks below illustrate how to read difficulty, not what to build. Judge the actual task in front of you; do not reuse these subjects or phrasings.
+
 - "修复登录接口偶发 500" -> tier: `medium`
 - "重构支付模块并拆分服务边界" -> tier: `high`
 - "补齐测试并更新注释" -> tier: `low`

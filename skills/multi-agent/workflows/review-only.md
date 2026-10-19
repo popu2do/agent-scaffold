@@ -19,13 +19,11 @@
 ```markdown
 **任务**: 评审需求并提出问题和建议
 
-**第一步**: 读取角色配置 `.claude/skills/multi-agent/agent1-reviewer.md`
+**第一步**: 读取角色配置 `agent1-reviewer.md`，位置在 multi-agent 技能目录
 
 **输入**: [用户需求描述]
 
-**规范**:
-- `Docs/steering/architecture.md`
-- `Docs/interactions/README.md`
+**规范**: 以当前仓库实际存在的规范文档为准，例如 AGENTS.md、README、架构与接口说明
 
 **输出**:
 1. 需求理解（重述需求）

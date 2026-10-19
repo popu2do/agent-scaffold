@@ -2,6 +2,8 @@
 
 Concrete examples of documentation improvements by applying Strunk & White principles. Each example includes annotations explaining key changes.
 
+Project names, technology stacks, versions and commands here are illustrative only. When writing a real document, take every fact from the target project; never copy a name, a version number or a command out of these examples.
+
 ## Example 1: README - Project Description
 
 ### Before (73 words)

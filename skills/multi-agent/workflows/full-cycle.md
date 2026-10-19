@@ -31,7 +31,7 @@
 ```markdown
 **任务**: [子任务描述]
 
-**第一步**: 读取角色配置 `.claude/skills/multi-agent/agent[N]-[role].md`
+**第一步**: 读取角色配置 `agent<N>-<role>.md`，位置在 multi-agent 技能目录
 
 **输入**: [目标快照 + 当前状态 + 子任务输入]
 
@@ -63,7 +63,7 @@ Worker 输出：候选结果 + 证据 + 风险。
 ```markdown
 **任务**: 独立验证候选结果
 
-**第一步**: 读取角色配置 `.claude/skills/multi-agent/agent2-gatekeeper.md`
+**第一步**: 读取角色配置 `agent2-gatekeeper.md`，位置在 multi-agent 技能目录
 
 **输入**: [候选执行结果 + 验收标准 + 关键证据]
 

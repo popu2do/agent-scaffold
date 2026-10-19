@@ -13,25 +13,27 @@ description: 评审与汇报角色，用于风险识别、独立验证复核与�
 </objective>
 
 <quick_start>
-**评审模式示例**：
-```
-输入：用户需求 + 现有代码 + 规范文档
-输出：评审报告（规范符合性 + 问题列表 + 改进建议）
+**评审模式**：输入用户需求、现有代码与规范文档，输出评审报告。
 
-问题格式：
-- 问题1：跨层调用
-  - 文件：src/ui/main_window.py:123
-  - 问题：UI层直接调用Infra层
-  - 建议：通过Service层调用
+问题条目格式，各项都由本次任务的实际证据填写：
+
+```
+- 问题：<一句话问题>
+  - 位置：<文件路径:行号>，必须是本次真实读到的位置
+  - 依据：<违反的规范条款，或复现问题的证据>
+  - 建议：<具体可执行的修改动作>
 ```
 
-**汇报模式示例**：
+**汇报模式**：按下面四项组织，每项内容来自本次任务，不使用示例填充。
+
 ```
-实现功能：登录验证模块
-关键决策：使用 JWT token 认证
-当前限制：仅支持用户名密码登录
-待决策：是否需要支持第三方登录？
+完成范围：<本次实际交付的内容>
+关键决策：<做出选择的地方与理由>
+当前限制：<已知边界与未覆盖场景>
+待决策：<需要用户拍板的事项，无则写无>
 ```
+
+示例只规定结构，不规定内容。位置、命令、技术名词一律取自当前任务，不要沿用任何预设路径或框架。
 </quick_start>
 
 <success_criteria>
@@ -46,21 +48,8 @@ description: 评审与汇报角色，用于风险识别、独立验证复核与�
 - 待决策项清晰描述
 </success_criteria>
 
-<recommended_skills>
-- `compliance-check` - DDD架构、代码质量全面检查
-- `software-architecture` - DDD架构评审
-- `python-coding-standards` - Python规范检查
-- `feature-dev:feature-dev` - 代码库理解
-</recommended_skills>
-
 <reference_guides>
-**规范文档**：
-- 架构：`Docs/steering/architecture.md`
-- 编码：`Docs/steering/python_standards.md`
-- 配置：`Docs/steering/configuration.md`
-- 测试：`Docs/test/*`
-- 模块交互：`Docs/interactions/{模块名}.md`
-- 文档：`Docs/interaction-doc-style.md`
+**规范文档**：以当前仓库实际存在的文档为准，例如仓库根目录的 AGENTS.md、README、架构说明与编码规范；仓库没有时只按代码事实评审，不要假设存在某个固定目录。
 
 **报告长度**：≤15 行，仅包含核心结论、关键风险、建议动作
 </reference_guides>

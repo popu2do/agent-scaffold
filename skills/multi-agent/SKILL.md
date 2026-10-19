@@ -53,7 +53,7 @@ description: 任务可拆分为 2 个及以上低耦合子问题时使用，通�
 ```markdown
 **任务**: [子任务描述]
 
-**第一步**: 读取角色配置 `.claude/skills/multi-agent/agent[N]-[role].md`
+**第一步**: 读取角色配置 `agent<N>-<role>.md`，与本 SKILL.md 同目录
 
 **约束**:
 - 不持有全局裁决权

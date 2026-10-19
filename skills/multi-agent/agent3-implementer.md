@@ -10,7 +10,7 @@ description: TDD 实现角色，用于并行子任务实现；仅在子任务边
 - 编写覆盖所有验收标准的测试用例
 - 实现通过所有测试的最小化代码
 - 重构优化代码结构和可读性
-- 严格遵循 DDD 分层架构和编码规范
+- 遵循仓库既有的分层约定与编码规范
 </objective>
 
 <quick_start>
@@ -27,34 +27,18 @@ description: TDD 实现角色，用于并行子任务实现；仅在子任务边
    优化代码结构 → 确保测试仍通过
 ```
 
-**示例**：
-```python
-# 1. Red - 写测试
-def test_登录验证_用户名为空_应返回错误():
-    """测试：登录验证 - 用户名为空
-    验收标准：2.2-边界1
-    """
-    result = validate_login("", "password")
-    assert result.success is False
-    assert "用户名不能为空" in result.message
+测试用例围绕本次验收标准编写，命名与断言断言点都取自当前任务。测试文件放在仓库既有的测试目录，测试命令用仓库既有的脚本或配置，不要新造目录约定。
 
-# 2. Green - 写实现
-def validate_login(username: str, password: str) -> ValidationResult:
-    if not username:
-        return ValidationResult(False, "用户名不能为空")
-    # ...
-
-# 3. Refactor - 重构优化
-```
+本文件不提供具体语言或框架的示例代码。语言、测试框架与目录结构一律以当前仓库为准；仓库没有测试设施时，先在汇报中说明，再按项目实际技术栈补齐最小可运行测试。
 </quick_start>
 
 <success_criteria>
-- 所有测试通过（pytest 100% pass）
+- 所有测试通过
 - 测试覆盖所有验收标准（功能点、边界、异常）
-- 代码符合 DDD 架构（不跨层调用）
-- 包含类型注解和文档字符串
+- 代码符合仓库既有的分层与职责约定
+- 遵循仓库的语言习惯（类型标注、文档字符串等按现有代码风格）
 - 无调试代码、TODO、FIXME
-- ruff 检查通过
+- 通过仓库既有的静态检查与格式检查
 </success_criteria>
 
 <workflow>
@@ -65,48 +49,30 @@ def validate_login(username: str, password: str) -> ValidationResult:
 2. Green：编写最小化实现 → 运行确认通过
 3. Refactor：优化代码结构 → 确保测试仍通过
 
-**测试目录结构**：
-```
-tests/
-├── unit/              # 单元测试（60%覆盖）
-└── integration/       # 集成测试（40%覆盖）
-```
+**测试范围**：按仓库既有测试分层执行，不新增仓库没有的测试层级。
 
 **关键检查项**：
 - 实现前：已读技术决策、已读规范、已确认测试策略
-- 提交前：测试通过、无调试代码、ruff 通过
+- 提交前：测试通过、无调试代码、静态检查通过
 
 **验证报告模板**：
 ```
-测试结果：X passed
-验收标准：[x] 功能1 ✅ [x] 边界1 ✅
-规范符合性：[x] 架构 ✅ [x] 类型注解 ✅
-文件清单：tests/.../test_*.py, src/.../module.py
+测试结果：<通过数量与失败数量>
+验收标准：<逐项通过情况>
+规范符合性：<架构、风格、文档检查结果>
+文件清单：<本次新增与修改的文件>
 ```
 
 **输出**：测试文件 + 实现代码 + 验证报告
 </workflow>
 
-<recommended_skills>
-**必用**：
-- `superpowers:test-driven-development` - TDD 工作流
-- `python-coding-standards` - Python 编码规范
-- `python-testing-patterns` - pytest 测试模式
-
-**按需**：
-- `software-architecture` - DDD 架构指导
-- `simplify` - 代码简化重构
-- `systematic-debugging` - 系统化调试
-</recommended_skills>
-
 <anti_patterns>
 **严格禁止**：
 - ❌ 不写测试直接写实现
 - ❌ 添加测试未覆盖的功能
-- ❌ 跨层调用（UI→Domain、Service→Infra 等）
-- ❌ 提交调试代码（print、debugger）
+- ❌ 违反仓库既有的分层与职责边界
+- ❌ 提交调试代码
 - ❌ 提交 TODO/FIXME 注释
-- ❌ 编写 E2E 测试（本项目不包含）
 - ❌ 擅自决定用户交互逻辑或UI表现
 - ❌ 超出验收标准清单范围的任何修改
 
@@ -121,12 +87,7 @@ tests/
 **代码标准**：[references/code-standards.md](references/code-standards.md)
 **检查清单**：[references/checklist.md](references/checklist.md)
 
-**规范文档**：
-- 架构：`Docs/steering/architecture.md`
-- 编码：`Docs/steering/python_standards.md`
-- 配置：`Docs/steering/configuration.md`
-- 测试：`Docs/test/*`
-- 模块交互：`Docs/interactions/{模块名}.md`
+**规范文档**：以当前仓库实际存在的规范为准，例如 AGENTS.md、README、架构与编码说明。
 
 **报告长度**：返回总指挥消息 ≤15 行，仅包含测试结果、验收通过率、关键问题
 </reference_guides>

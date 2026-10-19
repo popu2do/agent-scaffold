@@ -44,13 +44,13 @@ yunzhijia-reimburse/
 {
   "defaultProject": {
     "name": "SAMPLE-PROJECT-NAME",
-    "id": "52",
+    "id": "PROJECT_ID",
     "number": "SAMPLE-PROJECT-CODE"
   },
   "defaultDepartment": {
     "name": "SAMPLE-DEPT-NAME",
-    "id": "2",
-    "number": "002"
+    "id": "DEPT_ID",
+    "number": "DEPT_CODE"
   },
   "categoryMappings": [
     {
@@ -88,14 +88,14 @@ yunzhijia-reimburse/
 4. **比对去重**：读取当前云之家报销单已存在的行（日期+金额），自动跳过已填发票，仅提取待增补项。
 
 ### 步骤 2：生成注入载荷
-构建标准明细项数组：
+构建标准明细项数组，字段值全部来自本次解析出的发票与当前配置，不使用示例字面量：
 ```javascript
 const newItems = [
   {
-    date: '2024-05-15',
-    amount: '38.50',
+    date: '<YYYY-MM-DD>',
+    amount: '<金额>',
     reason: '加班打车费',
-    typeObj: { id: "3", name: "加班交通费", number: "08.01" }
+    typeObj: { id: "<费用类型ID>", name: "<费用类型名>", number: "<费用类型编码>" }
   }
 ];
 ```
