@@ -94,7 +94,7 @@ const newItems = [
   {
     date: '<YYYY-MM-DD>',
     amount: '<金额>',
-    reason: '加班打车费',
+    reason: '<事由>',
     typeObj: { id: "<费用类型ID>", name: "<费用类型名>", number: "<费用类型编码>" }
   }
 ];

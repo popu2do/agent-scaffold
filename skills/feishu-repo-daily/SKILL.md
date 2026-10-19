@@ -15,6 +15,11 @@ description: Generate a Feishu daily report from a maintained repo list, using s
 
 推送使用 `scripts/push_feishu_daily.py`。
 
+两个环境变量必须由使用方自行配置，仓库不提供默认值：
+
+- `FEISHU_DAILY_HOST`：飞书租户域名，例如 `https://<你的租户域名>`。未设置时脚本直接退出并提示。
+- `FEISHU_DAILY_RULE_ID`：日报模板 ruleId，等价于 `--rule-id` 参数。
+
 ## 强约束
 
 以下规则是 **硬性 contract**，不是参考示例：

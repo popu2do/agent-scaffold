@@ -68,8 +68,17 @@
   // 3. 批量生成并追加明细行
   const countBefore = v.values.length;
   for (const item of (newItems || [])) {
+    // 费用类型主数据只能来自调用方或配置，脚本不提供任何内置默认值，
+    // 否则会在缺省路径上静默写入某一租户的真实编码。
+    const typeObj = item.typeObj;
+    if (!typeObj || !typeObj.id || !typeObj.number) {
+      return {
+        success: false,
+        error: 'MISSING_EXPENSE_TYPE',
+        message: '明细项缺少费用类型主数据：请为每一项传入 typeObj { id, name, number }，或在生成载荷前按配置补齐。'
+      };
+    }
     const dateMs = item.date ? new Date(item.date + ' 00:00:00').getTime() : Date.now();
-    const typeObj = item.typeObj || { id: "3", name: item.type || "加班交通费", number: "08.01" };
     const projObj = item.project || inheritedProj;
     const deptObj = item.dept || inheritedDept;
 
@@ -80,7 +89,7 @@
       Mo_2: '',
       Rd_0: item.relatedFlows || [],
       Ta_1: item.remark || '',
-      Te_4: item.reason || '加班打车费',
+      Te_4: item.reason || '',
       _id_: String(Math.floor(Math.random() * 1e9 + 1e9)),
       extendDataMap: {},
       iw_0: [typeObj],
