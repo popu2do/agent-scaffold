@@ -68,7 +68,14 @@
   // 3. 批量生成并追加明细行
   // 费用类型主数据只能来自调用方或配置，脚本不提供任何内置默认值。先整体校验再写入，
   // 避免中途遇到不完整条目时留下只追加了一半的表单。
-  const items = newItems || [];
+  const items = Array.isArray(newItems) ? newItems : [];
+  if (!items.length) {
+    return {
+      success: false,
+      error: 'EMPTY_PAYLOAD',
+      message: '载荷为空：请传入待注入明细数组，每项包含 date、amount 与 typeObj { id, name, number }。'
+    };
+  }
   const missingTypeAt = items.findIndex((item) => !item || !item.typeObj || !item.typeObj.id || !item.typeObj.number);
   if (missingTypeAt >= 0) {
     return {
