@@ -1,0 +1,23 @@
+{
+  "skill_name": "local-image-gen",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我出一张秋日森林壁纸，竖版",
+      "expected_output": "真实生成一张竖幅图片，落盘到默认目录，用 read_image 读入会话展示",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "画个穿西装的猫，我要拿来做播客封面，横的",
+      "expected_output": "真实生成一张横幅图片并展示，回复给出提示词摘要与绝对路径",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "把这张图改成夜景风格 <path>",
+      "expected_output": "用 --ref 走图生图，保留原构图只改光照，而不是声明不支持",
+      "files": []
+    }
+  ]
+}
