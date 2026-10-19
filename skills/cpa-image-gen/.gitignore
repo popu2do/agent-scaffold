@@ -1,0 +1,6 @@
+# Private gateway configuration (never uploaded)
+config.json
+*.local.json
+
+# Local output
+outputs/

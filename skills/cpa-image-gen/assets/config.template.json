@@ -1,0 +1,10 @@
+{
+  "baseUrl": "http://localhost:PORT/v1",
+  "model": "YOUR_IMAGE_MODEL_ID",
+  "outputDir": "~/.dsh/outputs/images",
+  "timeoutMs": 120000,
+  "apiKey": "",
+  "apiKeyEnv": "",
+  "credentialsFile": "",
+  "credentialsKey": ""
+}

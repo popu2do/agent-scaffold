@@ -1,22 +1,65 @@
 #!/usr/bin/env node
-// Drives a local CLIProxyAPI chat-completions endpoint that returns images as data URIs.
+// Generates images through a locally configured CLIProxyAPI gateway.
 // Usage:
-//   node generate.mjs <prompt> [--ref <image>] [--out <file>] [--base <url>] [--key <api-key>]
+//   node generate.mjs <prompt> [--ref <image>] [--out <file>] [--base <url>] [--key <api-key>] [--model <id>]
+// Gateway settings live in config.json next to this skill, copied from assets/config.template.json.
 // Prints one JSON line on success: { file, bytes, model, elapsed_ms }
 
 import { writeFile, mkdir, readFile } from "node:fs/promises";
 import { dirname, resolve, extname, join } from "node:path";
 import { homedir } from "node:os";
+import { fileURLToPath } from "node:url";
 
-const DEFAULT_MODEL = "gemini-3.1-flash-image";
-const DEFAULT_BASE = "http://127.0.0.1:8317/v1";
-const TIMEOUT_MS = 120_000;
-
+const SKILL_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const CONFIG_PATH = process.env.CPA_IMAGE_GEN_CONFIG ?? join(SKILL_DIR, "config.json");
 const FLAGS = new Set(["--out", "--base", "--key", "--model", "--ref"]);
 
 function fail(code, message) {
   console.error(message);
   process.exit(code);
+}
+
+// Expanding ~ here keeps paths in the config portable across the Windows and Linux installs
+// the same skill gets copied to.
+function expandHome(p) {
+  return p.startsWith("~/") ? join(homedir(), p.slice(2)) : p;
+}
+
+async function loadConfig() {
+  let text;
+  try {
+    text = await readFile(CONFIG_PATH, "utf8");
+  } catch {
+    fail(2, `missing gateway config: ${CONFIG_PATH}. Copy assets/config.template.json to config.json and fill it in.`);
+  }
+  let config;
+  try {
+    config = JSON.parse(text);
+  } catch (error) {
+    fail(2, `config.json is not valid JSON: ${error.message}`);
+  }
+  for (const key of ["baseUrl", "model"]) {
+    if (!config[key]) fail(2, `config.json is missing "${key}"`);
+  }
+  return config;
+}
+
+// The key may sit in the config, in an environment variable, or in a credential file that
+// already holds it. Whichever the config names is the one that gets used.
+async function resolveKey(config) {
+  if (config.apiKey) return config.apiKey;
+  if (config.apiKeyEnv && process.env[config.apiKeyEnv]) return process.env[config.apiKeyEnv];
+  if (config.credentialsFile && config.credentialsKey) {
+    try {
+      const text = await readFile(expandHome(config.credentialsFile), "utf8");
+      const pattern = new RegExp(`^\\s*${config.credentialsKey}:\\s*(\\S+)\\s*$`, "m");
+      const match = text.match(pattern);
+      if (match) return match[1];
+    } catch {
+      return undefined;
+    }
+  }
+  return undefined;
 }
 
 function parseArgs(argv) {
@@ -38,17 +81,6 @@ function parseArgs(argv) {
   return { prompt: prompt.join(" ").trim(), flags };
 }
 
-// The DSH credential file already stores the key, so read it rather than making every
-// caller pass the secret again. The shell environment does not carry it.
-async function keyFromDshCredentials() {
-  try {
-    const text = await readFile(join(homedir(), ".dsh", ".credentials.yaml"), "utf8");
-    return text.match(/^\s*EASYCLIPROXYAPI_API_KEY:\s*(\S+)\s*$/m)?.[1];
-  } catch {
-    return undefined;
-  }
-}
-
 function mimeOf(path) {
   const ext = extname(path).toLowerCase();
   if (ext === ".png") return "image/png";
@@ -63,7 +95,7 @@ async function contentFor(prompt, refPath) {
   if (!refPath) return prompt;
   let bytes;
   try {
-    bytes = await readFile(resolve(refPath));
+    bytes = await readFile(resolve(expandHome(refPath)));
   } catch {
     fail(1, `cannot read reference image: ${refPath}`);
   }
@@ -79,11 +111,14 @@ if (!prompt) {
   fail(2, "usage: node generate.mjs <prompt> [--ref <image>] [--out <file>] [--base <url>] [--key <api-key>] [--model <id>]");
 }
 
-const base = (flags.base ?? process.env.CPA_BASE_URL ?? DEFAULT_BASE).replace(/\/+$/, "");
+const config = await loadConfig();
+const base = (flags.base ?? process.env.CPA_IMAGE_GEN_BASE ?? config.baseUrl).replace(/\/+$/, "");
 const url = `${base}/chat/completions`;
-const model = flags.model ?? DEFAULT_MODEL;
-const outArg = flags.out ?? join(homedir(), ".dsh", "outputs", "images", `image-${Date.now()}.jpg`);
-const key = flags.key ?? process.env.EASYCLIPROXYAPI_API_KEY ?? (await keyFromDshCredentials());
+const model = flags.model ?? config.model;
+const timeoutMs = Number(config.timeoutMs ?? 120_000);
+const outputDir = expandHome(config.outputDir ?? "~/.dsh/outputs/images");
+const outArg = flags.out ?? join(outputDir, `image-${Date.now()}.jpg`);
+const key = flags.key ?? (await resolveKey(config));
 const content = await contentFor(prompt, flags.ref);
 
 const started = Date.now();
@@ -96,23 +131,23 @@ try {
       ...(key ? { Authorization: `Bearer ${key}` } : {}),
     },
     body: JSON.stringify({ model, messages: [{ role: "user", content }], stream: false }),
-    signal: AbortSignal.timeout(TIMEOUT_MS),
+    signal: AbortSignal.timeout(timeoutMs),
   });
 } catch (error) {
   if (error?.name === "TimeoutError") {
-    fail(1, `gateway timed out after ${TIMEOUT_MS / 1000}s at ${url}`);
+    fail(1, `gateway timed out after ${timeoutMs / 1000}s at ${url}`);
   }
-  fail(1, `gateway unreachable at ${url}; is CLIProxyAPI listening? (${error?.cause?.code ?? error?.message})`);
+  fail(1, `gateway unreachable at ${url}; is the gateway listening? (${error?.cause?.code ?? error?.message})`);
 }
 
 if (!res.ok) {
   const body = await res.text();
   console.error(`HTTP ${res.status}: ${body.slice(0, 800)}`);
   if (/User location is not supported/i.test(body)) {
-    console.error("Hint: egress is not proxied. Check proxy-url in the CLIProxyAPI config, expected http://127.0.0.1:9468, and confirm that port is listening.");
+    console.error("Hint: egress is not proxied. Check the gateway's proxy setting and confirm that proxy port is listening.");
   }
   if (/Invalid API key|Missing API key|Unauthorized/i.test(body)) {
-    console.error("Hint: the API key is missing or wrong. Confirm EASYCLIPROXYAPI_API_KEY in ~/.dsh/.credentials.yaml, or pass --key.");
+    console.error(`Hint: the API key is missing or wrong. Check the key source named in ${CONFIG_PATH}, or pass --key.`);
   }
   process.exit(1);
 }
@@ -122,8 +157,8 @@ const uri = payload?.choices?.[0]?.message?.images?.[0]?.image_url?.url ?? "";
 if (!uri) {
   // A reasoning-only reply means the request reached a protocol that drops images, or the
   // model id is text-only. Treating that as success would hand back an empty file name.
-  const keys = Object.keys(payload?.choices?.[0]?.message ?? {}).join(",");
-  fail(1, `no image in response; message fields were [${keys}]. This model returns images only through /v1/chat/completions.`);
+  const fields = Object.keys(payload?.choices?.[0]?.message ?? {}).join(",");
+  fail(1, `no image in response; message fields were [${fields}]. This gateway returns images only through /v1/chat/completions.`);
 }
 
 const comma = uri.indexOf(",");
