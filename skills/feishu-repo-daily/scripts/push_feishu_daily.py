@@ -37,7 +37,7 @@ from playwright.sync_api import sync_playwright
 USER_RULEID = os.getenv("FEISHU_DAILY_RULE_ID", "")
 
 # 飞书租户域名，必须由使用方通过环境变量显式指定，不设默认值
-FEISHU_HOST = os.getenv("FEISHU_DAILY_HOST", "").rstrip("/")
+FEISHU_HOST = os.getenv("FEISHU_DAILY_HOST", "").strip().rstrip("/")
 
 # 浏览器用户数据目录（用于保存登录状态）
 USER_DATA_DIR = Path(__file__).parent / ".tmp" / ".feishu_browser_data"
@@ -47,6 +47,8 @@ def get_report_url(rule_id: str) -> str:
     """根据 ruleId 生成日报页面 URL"""
     if not FEISHU_HOST:
         raise SystemExit("FEISHU_DAILY_HOST is not set; export your Feishu tenant origin first, e.g. https://<tenant-host>")
+    if not FEISHU_HOST.startswith(("http://", "https://")):
+        raise SystemExit(f"FEISHU_DAILY_HOST must start with http:// or https://, got: {FEISHU_HOST!r}")
     return f"{FEISHU_HOST}/report/record/detail?lang=zh-CN&open_in_browser=true&ruleId={rule_id}"
 
 

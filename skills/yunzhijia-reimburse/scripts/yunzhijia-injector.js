@@ -5,7 +5,7 @@
  * 1. OpenCLI (browser exec / eval)
  * 2. 浏览器开发者工具控制台 (F12 Console)
  *
- * @param {Array<Object>} newItems - 待注入明细列表 [{ date: 'YYYY-MM-DD', amount: '12.34', reason?: string, type?: string, typeObj?: Object, project?: Object, dept?: Object }]
+ * @param {Array<Object>} newItems - 待注入明细列表 [{ date: 'YYYY-MM-DD', amount: '12.34', typeObj: { id, name, number }, reason?: string, project?: Object, dept?: Object }]
  * @param {Object} [fallbackConfig] - 可选的默认配置 { defaultProject: { id, name, number }, defaultDepartment: { id, name, number } }
  * @returns {Object} 结构化执行报告
  */
@@ -66,18 +66,20 @@
   }
 
   // 3. 批量生成并追加明细行
-  const countBefore = v.values.length;
-  for (const item of (newItems || [])) {
-    // 费用类型主数据只能来自调用方或配置，脚本不提供任何内置默认值，
-    // 否则会在缺省路径上静默写入某一租户的真实编码。
+  // 费用类型主数据只能来自调用方或配置，脚本不提供任何内置默认值。先整体校验再写入，
+  // 避免中途遇到不完整条目时留下只追加了一半的表单。
+  const items = newItems || [];
+  const missingTypeAt = items.findIndex((item) => !item || !item.typeObj || !item.typeObj.id || !item.typeObj.number);
+  if (missingTypeAt >= 0) {
+    return {
+      success: false,
+      error: 'MISSING_EXPENSE_TYPE',
+      message: `明细项第 ${missingTypeAt + 1} 条缺少费用类型主数据：请为每一项传入 typeObj { id, name, number }，或在生成载荷前按配置补齐。`
+    };
+  }
+
+  for (const item of items) {
     const typeObj = item.typeObj;
-    if (!typeObj || !typeObj.id || !typeObj.number) {
-      return {
-        success: false,
-        error: 'MISSING_EXPENSE_TYPE',
-        message: '明细项缺少费用类型主数据：请为每一项传入 typeObj { id, name, number }，或在生成载荷前按配置补齐。'
-      };
-    }
     const dateMs = item.date ? new Date(item.date + ' 00:00:00').getTime() : Date.now();
     const projObj = item.project || inheritedProj;
     const deptObj = item.dept || inheritedDept;
@@ -114,7 +116,7 @@
   const ac0 = targetDoc.querySelector('#Ac_0');
   return {
     success: true,
-    addedCount: (newItems || []).length,
+    addedCount: items.length,
     totalRows: v.values.length,
     totalAmountSummary: ac0 ? ac0.innerText.trim() : null
   };
