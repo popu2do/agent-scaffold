@@ -33,9 +33,11 @@ from pathlib import Path
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
-# 默认 ruleId（可通过 --rule-id 参数覆盖）
 # 默认 ruleId（可通过环境变量 FEISHU_DAILY_RULE_ID 或 --rule-id 参数覆盖）
 USER_RULEID = os.getenv("FEISHU_DAILY_RULE_ID", "")
+
+# 飞书租户域名，私有化部署或不同租户时通过环境变量覆盖
+FEISHU_HOST = os.getenv("FEISHU_DAILY_HOST", "https://oa.feishu.cn")
 
 # 浏览器用户数据目录（用于保存登录状态）
 USER_DATA_DIR = Path(__file__).parent / ".tmp" / ".feishu_browser_data"
@@ -43,7 +45,7 @@ USER_DATA_DIR = Path(__file__).parent / ".tmp" / ".feishu_browser_data"
 
 def get_report_url(rule_id: str) -> str:
     """根据 ruleId 生成日报页面 URL"""
-    return f"https://oa.feishu.cn/report/record/detail?lang=zh-CN&open_in_browser=true&ruleId={rule_id}"
+    return f"{FEISHU_HOST}/report/record/detail?lang=zh-CN&open_in_browser=true&ruleId={rule_id}"
 
 
 def ensure_browser_data_dir() -> None:

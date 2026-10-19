@@ -27,10 +27,10 @@ Gateway details stay out of this file. Copy `assets/config.template.json` to `co
 2. Generate through the bundled script:
 
 ```bash
-node ~/.dsh/skills/cpa-image-gen/scripts/generate.mjs "<prompt>" --out <absolute-path>.jpg
+node <skill-dir>/scripts/generate.mjs "<prompt>" --out <absolute-path>.jpg
 ```
 
-On Windows expand the home path, for example `D:/Users/<you>/.dsh/skills/cpa-image-gen/scripts/generate.mjs`. If the global shell rules require a prefix on external commands, put it in front of `node`. The script prints one JSON line `{ file, bytes, model, elapsed_ms }` on success.
+`<skill-dir>` is the directory holding this SKILL.md, wherever the skill is installed. On Windows expand the home path rather than using `~`, for example `D:/Users/<you>/.dsh/skills/cpa-image-gen/scripts/generate.mjs`. If the global shell rules require a prefix on external commands, put it in front of `node`. The script prints one JSON line `{ file, bytes, model, elapsed_ms }` on success.
 
 3. Read the saved file with `read_image`. That step is what puts the picture into the conversation; a path alone leaves the user with nothing to look at.
 4. Reply in the user's language with the image, then two short lines: the prompt you used, and the absolute file path. Skip step narration, because it competes with the picture for attention.

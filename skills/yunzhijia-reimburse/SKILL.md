@@ -56,15 +56,15 @@ yunzhijia-reimburse/
     {
       "keywords": ["打车", "出行", "交通", "网约车", "出租车"],
       "type": "加班交通费",
-      "id": "3",
-      "number": "08.01",
+      "id": "<费用类型ID>",
+      "number": "<费用类型编码>",
       "defaultReason": "加班打车费"
     },
     {
       "keywords": ["餐", "工作餐", "外卖", "餐饮"],
       "type": "加班餐费",
-      "id": "1",
-      "number": "04.02",
+      "id": "<费用类型ID>",
+      "number": "<费用类型编码>",
       "defaultReason": "加班餐费"
     }
   ]
