@@ -4,19 +4,25 @@
     {
       "id": 1,
       "prompt": "帮我出一张秋日森林壁纸，竖版",
-      "expected_output": "真实生成一张竖幅图片，落盘到默认目录，用 read_image 读入会话展示",
+      "expected_output": "生成一张竖幅图片，提示词围绕森林与秋色自拟，落盘后用 read_image 展示，回复给出提示词与绝对路径",
       "files": []
     },
     {
       "id": 2,
       "prompt": "画个穿西装的猫，我要拿来做播客封面，横的",
-      "expected_output": "真实生成一张横幅图片并展示，回复给出提示词摘要与绝对路径",
+      "expected_output": "生成一张横幅图片，提示词围绕猫与西装自拟并体现封面用途，用 read_image 展示，回复给出提示词与绝对路径",
       "files": []
     },
     {
       "id": 3,
       "prompt": "把这张图改成夜景风格 <path>",
-      "expected_output": "用 --ref 走图生图，保留原构图只改光照，而不是声明不支持",
+      "expected_output": "用 --ref 传入原图改光照，明确保留原构图与结构，输出文件与原图构图一致",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "随便画点好看的",
+      "expected_output": "先追问画什么，不在未确认主题的情况下直接生成",
       "files": []
     }
   ]
