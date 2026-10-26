@@ -10,7 +10,7 @@ Quote paths with spaces; use forward slashes; use dedicated tools over shell; ba
 
 ## Code & Git Discipline
 - Zero-trace: Diffs and commits must reflect a clean, final-state design. Retain only working code and comments explaining non-obvious rationales, hidden constraints, or edge cases. Strip all commented-out code, change markers, and temporary debugging debris before delivery.
-- Scoped impact: Modify only the exact lines required by the task. Preserve existing formatting and configurations on all untouched code. Subtract dead code or redundant dependencies before adding new ones; fix root causes at the source.
+- Scoped impact: Modify only the exact lines required by the task. Preserve existing formatting and configurations on all untouched code. Log or report out-of-scope defects and risks instead of opportunistically patching them; fix root causes at the source.
 - Commit intent: Write terse commit messages and PR descriptions stating problem-level intent over code diffs, matching repository history.
 - Completion gate: Before finishing, verify the working diff is clean of temporary artifacts, all tests pass, and verification output is attached.
 
